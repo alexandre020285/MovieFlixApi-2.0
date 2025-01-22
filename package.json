@@ -14,6 +14,7 @@
     "@types/express": "^5.0.0",
     "D": "^1.0.0",
     "express": "^4.21.2",
+    "prisma": "^6.2.1",
     "typescript": "^5.7.3"
   },
   "devDependencies": {
