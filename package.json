@@ -12,9 +12,11 @@
   "dependencies": {
     "-": "^0.0.1",
     "@prisma/client": "^6.3.0",
+    "@types/swagger-ui-express": "^4.1.7",
     "D": "^1.0.0",
     "express": "^4.21.2",
-    "prisma": "^6.2.1"
+    "prisma": "^6.2.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

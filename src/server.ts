@@ -1,11 +1,17 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
+
 
 const port = 3000;
 const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
+
+//ROTA PARA DOCUMENTAÇÃO SWAGGER
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Rota para listar filmes
 app.get("/movies", async (_, res) => {
@@ -90,7 +96,7 @@ app.put("/movies/:id", async (req, res) => {
   }
 });
 
-//ROTA PARA REMOVER UM FILME
+//⭕ROTA PARA REMOVER UM FILME
 app.delete("/movies/:id", async (req, res) => {
   const id = Number(req.params.id); // Adiciona o id da requisição
 
@@ -114,9 +120,9 @@ app.delete("/movies/:id", async (req, res) => {
   }
 });
 
-//FILTRAR O FILME POR GENERO ESPECIFICO
+//⭕FILTRAR O FILME POR GENERO ESPECIFICO
 app.get("/movies/:genreName", async (req, res) => {
-  //FILTRAR OS FILMES DO BANCO PELO GENERO
+  //⭕FILTRAR OS FILMES DO BANCO PELO GENERO
   try {
     const moviesFilteredByGenreName = await prisma.movie.findMany({
       include: {
@@ -140,9 +146,9 @@ app.get("/movies/:genreName", async (req, res) => {
       .send({ message: "Falha ao selecionar por gênero o filme." });
   }
 }); 
-// RETORNAR OS FILMES FILTRADOS NA RESPOSTA DA ROTA
 
-// Iniciar o servidor
+
+//⭕ Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor em execução na porta ${port}`);
 });
