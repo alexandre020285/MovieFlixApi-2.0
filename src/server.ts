@@ -90,6 +90,30 @@ app.put("/movies/:id", async (req, res) => {
   }
 });
 
+//ROTA PARA REMOVER UM FILME
+app.delete("/movies/:id", async (req, res) => {
+  const id = Number(req.params.id); // Adiciona o id da requisição
+
+  try {
+    const movie = await prisma.movie.findUnique({
+      where: { id },
+    });
+
+    if (!movie) {
+      return console.log("Filme nao encontrado");
+    }
+
+    await prisma.movie.delete({
+      where: { id },
+    }); 
+
+    res.status(200).send({ message: "Filme removido com sucesso!" });
+  } catch (error) {
+    console.error("Falha ao remover o registro:", error);
+    res.status(500).send({ message: "Falha ao remover o registro." });
+  }
+    })
+
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor em execução na porta ${port}`);
