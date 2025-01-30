@@ -105,17 +105,44 @@ app.delete("/movies/:id", async (req, res) => {
 
     await prisma.movie.delete({
       where: { id },
-    }); 
+    });
 
     res.status(200).send({ message: "Filme removido com sucesso!" });
   } catch (error) {
-    console.error("Falha ao remover o registro:", error);
-    res.status(500).send({ message: "Falha ao remover o registro." });
+    console.error("Falha ao remover o filme:", error);
+    res.status(500).send({ message: "Falha ao remover o filme." });
   }
-    })
+});
+
+//FILTRAR O FILME POR GENERO ESPECIFICO
+app.get("/movies/:genreName", async (req, res) => {
+  //FILTRAR OS FILMES DO BANCO PELO GENERO
+  try {
+    const moviesFilteredByGenreName = await prisma.movie.findMany({
+      include: {
+        genres: true,
+        languages: true,
+      },
+      where: {
+        genres: {
+          name: {
+            equals: req.params.genreName,
+            mode: "insensitive",
+          },
+        },
+      },
+    });
+    res.status(200).send(moviesFilteredByGenreName);
+  } catch (error) {
+    console.error("Falha ao selecionar por gênero", error);
+    res
+      .status(500)
+      .send({ message: "Falha ao selecionar por gênero o filme." });
+  }
+}); 
+// RETORNAR OS FILMES FILTRADOS NA RESPOSTA DA ROTA
 
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor em execução na porta ${port}`);
 });
-
