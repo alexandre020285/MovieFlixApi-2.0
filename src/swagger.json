@@ -18,7 +18,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/movie"
+                    "$ref": "#/components/schemas/Movie"
                   }
                 }
               }
@@ -68,7 +68,6 @@
         "tags": ["Movie"],
         "summary": "Deletar um filme",
         "parameters": [
-            
           {
             "name": "id",
             "in": "path",
@@ -88,6 +87,40 @@
           },
           "500": {
             "description": "Não foi possivel remove o filme"
+          }
+        }
+      }
+    },
+    "/movies/{genreName}": {
+      "get": {
+        "tags": ["Movie"],
+        "summary": "Obter filmes por gênero",
+        "parameters": [
+          {
+            "name": "genreName",
+            "in": "path",
+            "required": true,
+            "description": "Nome do gênero",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Não foi possivel filtrar por gênero"
           }
         }
       }
@@ -161,6 +194,7 @@
           "oscar_count",
           "release_date"
         ],
+
         "properties": {
           "title": {
             "type": "string",
