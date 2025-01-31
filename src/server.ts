@@ -74,7 +74,7 @@ app.put("/movies/:id", async (req, res) => {
     });
 
     if (!movie) {
-      return console.log("Filme nao encontrado");
+      res.status(404).send({ message: "Filme não encontrado!" });
     }
 
     const data = {
@@ -106,7 +106,8 @@ app.delete("/movies/:id", async (req, res) => {
     });
 
     if (!movie) {
-      return console.log("Filme nao encontrado");
+      //return console.log("Filme nao encontrado");
+   res.status(500).send({ message: "Falha ao remover o filme." });
     }
 
     await prisma.movie.delete({

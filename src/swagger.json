@@ -8,6 +8,7 @@
   "paths": {
     "/movies": {
       "get": {
+        "tags": ["Movie"],
         "summary": "Obter a lista dos filmes",
         "responses": {
           "200": {
@@ -17,11 +18,76 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Movie"
+                    "$ref": "#/components/schemas/movie"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "put": {
+        "tags": ["Movie"],
+        "summary": "Atualizar um filme",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do filme",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/movieImput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Filme atualizado com sucesso"
+          },
+          "404": {
+            "description": "Filme nao encontrado"
+          },
+          "500": {
+            "description": "Falha ao atualizar o filme"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movie"],
+        "summary": "Deletar um filme",
+        "parameters": [
+            
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do filme a ser removido",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filme removido com sucesso"
+          },
+          "404": {
+            "description": "Filme nao encontrado"
+          },
+          "500": {
+            "description": "Não foi possivel remove o filme"
           }
         }
       }
@@ -74,6 +140,39 @@
                 "description": "Nome do linguagem"
               }
             }
+          },
+          "oscar_count": {
+            "type": "integer",
+            "description": "Quantidade de Oscars do filme"
+          },
+          "release_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de lancamento do filme"
+          }
+        }
+      },
+      "movieImput": {
+        "type": "object",
+        "required": [
+          "title",
+          "genre_id",
+          "language_id",
+          "oscar_count",
+          "release_date"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Titulo do filme"
+          },
+          "genre_id": {
+            "type": "integer",
+            "description": "Genero do filme"
+          },
+          "language_id": {
+            "type": "integer",
+            "description": "Linguagem do filme"
           },
           "oscar_count": {
             "type": "integer",
