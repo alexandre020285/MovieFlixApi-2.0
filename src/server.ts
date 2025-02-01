@@ -3,17 +3,13 @@ import { PrismaClient } from "@prisma/client";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json";
 
-
 const port = 3000;
 const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
-
-//ROTA PARA DOCUMENTAÇÃO SWAGGER
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Rota para listar filmes
 app.get("/movies", async (_, res) => {
   try {
     const movies = await prisma.movie.findMany({
@@ -32,12 +28,10 @@ app.get("/movies", async (_, res) => {
   }
 });
 
-// Rota para cadastrar um novo filme
 app.post("/movies", async (req, res) => {
   const { title, genre_id, language_id, oscar_count, release_date } = req.body;
 
   try {
-    // Verificar se já existe um filme com o mesmo título
     const movieWithSameTitle = await prisma.movie.findFirst({
       where: { title: { equals: title, mode: "insensitive" } },
     });
@@ -46,7 +40,6 @@ app.post("/movies", async (req, res) => {
       return console.log("Filme ja cadastrado");
     }
 
-    // Criar um novo filme
     await prisma.movie.create({
       data: {
         title,
@@ -64,9 +57,8 @@ app.post("/movies", async (req, res) => {
   }
 });
 
-// Rota para atualizar um filme existente
 app.put("/movies/:id", async (req, res) => {
-  const id = Number(req.params.id); // Adiciona o id da requisição
+  const id = Number(req.params.id); 
 
   try {
     const movie = await prisma.movie.findUnique({
@@ -96,9 +88,8 @@ app.put("/movies/:id", async (req, res) => {
   }
 });
 
-//⭕ROTA PARA REMOVER UM FILME
 app.delete("/movies/:id", async (req, res) => {
-  const id = Number(req.params.id); // Adiciona o id da requisição
+  const id = Number(req.params.id); 
 
   try {
     const movie = await prisma.movie.findUnique({
@@ -106,7 +97,6 @@ app.delete("/movies/:id", async (req, res) => {
     });
 
     if (!movie) {
-      //return console.log("Filme nao encontrado");
    res.status(500).send({ message: "Falha ao remover o filme." });
     }
 
@@ -121,9 +111,7 @@ app.delete("/movies/:id", async (req, res) => {
   }
 });
 
-//⭕FILTRAR O FILME POR GENERO ESPECIFICO
 app.get("/movies/:genreName", async (req, res) => {
-  //⭕FILTRAR OS FILMES DO BANCO PELO GENERO
   try {
     const moviesFilteredByGenreName = await prisma.movie.findMany({
       include: {
@@ -148,8 +136,6 @@ app.get("/movies/:genreName", async (req, res) => {
   }
 }); 
 
-
-//⭕ Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor em execução na porta ${port}`);
 });
