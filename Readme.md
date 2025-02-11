@@ -3,6 +3,9 @@
 ## Desrição 📝
 Projeto simples que tem como finalidade a criação de um banco de dados e posteriormente, a sua manipulação feita por API.
 
+## Como testar
+ao baixar projeto e instalar das dependências, o código esta configurado para ser testado através do Swagger no http://localhost:3000/docs
+
 Seu funcionamento consiste em manulipação de dado de um banco como:
 
     * Obter a lista dos filmes
